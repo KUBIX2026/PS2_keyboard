@@ -18,7 +18,7 @@ PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex (** entre u
 - *Host*: quien recibe las teclas y puede enviar comandos. *Dispositivo*: el teclado. El dispositivo **siempre** genera el reloj; el host tiene el control final del bus.
 
 - *half-duplex*: Solo envia o recibe, nunca ambas cosas.
-- *Bidireccional*: La comunicacion puede ser de teclado a host o de host a teclado.
+- *Bidireccional*: La comunicación se lleva a cabo del teclado al host y viceversa.
 ### Interfaz física
 
 El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (reloj, indica cuándo el dato es válido y puede leerse), más alimentación y tierra.
