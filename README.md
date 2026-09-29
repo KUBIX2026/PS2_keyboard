@@ -17,9 +17,8 @@ PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un 
 
 - *Host*: quien recibe las teclas y puede enviar comandos.
 - *Dispositivo*: el teclado. El dispositivo **siempre** genera el reloj; el host tiene el control final del bus.
-- *Half-duplex*: La información viaja en ambos sentidos, pero únicamente envía o recibe en el momento, nunca hace ambas cosas a la vez.
 - *Bidireccional*: La comunicación se lleva a cabo del teclado al host y viceversa.
-
+- *Half-duplex*: La información viaja en ambos sentidos, pero únicamente envía o recibe en el momento, nunca hace ambas cosas a la vez.
 
 ### Interfaz física
 
@@ -110,7 +109,7 @@ Para diseñar o emular un dispositivo/host, el dato se modifica o muestrea hacia
   <img src="Imagenes/DTPS2_device_host.png" alt="PS/2" width="700">
 </p>
 
-El teclado inicia y controla toda la transmisión:
+El teclado genera los pulsos de reloj durante la transmisión:
 
 1. Verifica que CLK esté en alto (si no, el host está bloqueando y el teclado guarda el dato).
 2. Espera que CLK lleve al menos 50 µs en alto.
@@ -297,11 +296,10 @@ La documentación y el diseño base de esta plantilla se encuentran en el
 repositorio [digital_UN](https://github.com/cicamargoba/digital_UN/tree/main/2026_1),
 propiedad de [@cicamargo](https://github.com/cicamargoba).
 
-Parte de la información y las imágenes fueron tomadas del repositorio de Protocolo PS/2 de isvallrod: <https://github.com/isvallrod/ProtocoloPS2/>.
-
 Referencias técnicas:
 
 - A. Chapweske, *The PS/2 Mouse/Keyboard Protocol*: <https://www.burtonsys.com/ps2_chapweske.htm>
 - Network Technologies Inc., *PS/2 Keyboard & Mouse Protocols*: <https://www.networktechinc.com/ps2-prots.html>
 - S. A. Edwards, *The PS/2 Keyboard and Mouse Interface* (Columbia University): <https://www.cs.columbia.edu/~sedwards/classes/2005/emsys-summer/ps2-keyboard.pdf>
 - University of Toronto, *PS/2 Controller* (ECE241): <https://www.eecg.utoronto.ca/~jayar/ece241_08F/AudioVideoCores/ps2/ps2.html>
+- A. Brouwer, Keyboard-internal scancodes (Stanford University, CS140): <https://www.scs.stanford.edu/10wi-cs140/pintos/specs/kbd/scancodes-9.html>
