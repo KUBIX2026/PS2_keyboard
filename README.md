@@ -4,21 +4,23 @@
 
 | | 
 | :--- | 
-| **Ivan Felipe Maluche Suarez** | 
-| **Kevin Javier Gonzalez Luna** | 
-| **Santiago Guillen** | 
-| **Felipe Hortua** | 
+| **Iván Felipe Maluche Suárez** | 
+| **Kevin Javier González Luna** | 
+| **Santiago Guillén** | 
+| **Felipe Hortúa** | 
 
 ---
 
 ## Protocolo
 
-PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex (** entre un **dispositivo** (el teclado) y un **host** (en este proyecto, la FPGA).
+PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un **dispositivo** (el teclado) y un **host** (en este proyecto, la FPGA).
 
-- *Host*: quien recibe las teclas y puede enviar comandos. *Dispositivo*: el teclado. El dispositivo **siempre** genera el reloj; el host tiene el control final del bus.
-
-- *half-duplex*: Solo envia o recibe, nunca ambas cosas.
+- *Host*: quien recibe las teclas y puede enviar comandos.
+- *Dispositivo*: el teclado. El dispositivo **siempre** genera el reloj; el host tiene el control final del bus.
+- *Half-duplex*: La información viaja en ambos sentidos, pero únicamente envía o recibe en el momento, nunca hace ambas cosas a la vez.
 - *Bidireccional*: La comunicación se lleva a cabo del teclado al host y viceversa.
+
+
 ### Interfaz física
 
 El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (reloj, indica cuándo el dato es válido y puede leerse), más alimentación y tierra.
@@ -49,11 +51,11 @@ El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (r
 <details>
 <summary><strong>Reglas generales del protocolo</strong></summary>
 <ul>
-  <li>Al presionarse una tecla se recibe el paquete de bits que la representan desde el microcontrolador propio del teclado, llegando directamente a DATA </li>
-  <li>El teclado siempre genera el reloj, incluso cuando el host es quien envía datos.</li>
-  <li>El host puede bloquear la comunicación en cualquier momento bajando CLK al menos <strong>100 µs</strong>.</li>
-  <li>Si el host bloquea antes del 11.º pulso de reloj, el teclado aborta y <strong>retransmite todo el bloque</strong> cuando el host libere CLK.</li>
-  <li>Cada byte viaja en una trama de 11 bits (12 si va del host al teclado).</li>
+  <li>Al presionarse una tecla, se recibe el paquete de bits que la representan desde el microcontrolador propio del teclado, llegando directamente a DATA.</li>
+  <li>El teclado siempre genera el reloj, incluso cuando el host es quien envía los datos.</li>
+  <li>El host puede bloquear la comunicación en cualquier momento, bajando CLK al menos <strong>100 µs</strong>.</li>
+  <li>Si el host bloquea antes del 11.º pulso de reloj, el teclado aborta y <strong>retransmite el bloque completo</strong> cuando el host libere CLK.</li>
+  <li>Cada byte viaja en una trama de 11 bits (si va del host al teclado, son 12 bits).</li>
 </ul>
 </details>
 
@@ -61,7 +63,7 @@ El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (r
 
 ### Formato
 
-Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (bit menos significativo primero y mas significativo ultimo), 1 bit de paridad impar y 1 bit de parada**.
+Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (bit menos significativo al inicio y más significativo al final), 1 bit de paridad impar y 1 bit de parada**.
 
 | Bit | Función | Valor |
 | :---: | :--- | :--- |
@@ -76,17 +78,16 @@ Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (
 | 9 | D7 (MSB) | Dato |
 | 10 | Paridad | Paridad impar |
 | 11 | Stop | Siempre `1` |
-| 12 | ACK | Solo en host → teclado: el teclado baja DATA para confirmar |
+| 12 | ACK | Sólo en host → teclado: el teclado baja DATA para confirmar |
 
 ### Paridad par/impar
 
-PS/2 utiliza paridad impar. Los 8 bits de datos más el bit
-de paridad deben contener un número impar de unos.
+La paridad es una convención elegida por nostros, los 8 bits de datos más el bit de paridad deben sumar siempre un número par o impar de unos, dependiendo de la convención elegida.
 
-El receptor debe verificar la paridad de cada trama.
+Quien recibe debe verificar la paridad. Si es incorrecta, el teclado responde como si hubiera recibido un comando inválido (pide reenvío con `FE`).
 
 ### Manejo de bloqueos
-En caso de que el host bloquee el reloj (clock ≥ 100 µs ) el teclado guardara el bytes en un buffer de <strong>16 bytes</strong>. Si se llena, las teclas nuevas se ignoran.
+En caso de que el host bloquee el reloj (clock ≥ 100 µs), el teclado guardará los bytes en un buffer de <strong>16 bytes</strong>. Si se llena, las teclas nuevas se ignoran.
 <details>
 <summary>Temporización</summary>
 
@@ -153,9 +154,9 @@ Si no se cumple alguno, el host debe generar un error.
 
 ---
 
-## Que envía el teclado al host
+## ¿Qué envía el teclado al host?
 
-### Codigos de tecla (scan codes, set 2)
+### Códigos de tecla (scan codes, set 2)
 
 El set 2 es el conjunto por defecto. El teclado envía uno o más bytes cada vez que una tecla se **presiona**, se **mantiene** o se **suelta**.
 
@@ -225,12 +226,12 @@ El host puede enviar comandos en cualquier momento. **El envío de un comando ti
 | Comando | Nombre | Argumento | Respuesta del teclado |
 | :---: | :--- | :--- | :--- |
 | `ED` | **Set LEDs** | Segundo byte con el estado de los LEDs (ver abajo) | `FA` tras el comando y `FA` tras el argumento |
-| `EE` | **Echo** | 0xEE (dato de diagnostico)| `EE` |
+| `EE` | **Echo** | 0xEE (dato de diagnóstico)| `EE` |
 | `F0` | **Set scan code set** | Segundo byte: `01`, `02` o `03`. Con `00` se consulta el set en uso | `FA` y espera el argumento (con `00`, devuelve el set actual) |
 | `F3` | **Set typematic rate/delay** | Segundo byte: bits 4:0 tasa de repetición, bits 6:5 retardo inicial | `FA` y espera el argumento |
-| `F4` | **Enable** | 0xF4 (activacion del escaneo) | `FA` (limpia el buffer y habilita el escaneo) |
-| `F5` | **Disable** | 0xF5 (desactivacion del escaneo) | `FA` (deshabilita el envío de teclas) |
-| `FE` | **Resend** | 0xFE (reenvio del ultimo byte) | Retransmite el último byte enviado |
+| `F4` | **Enable** | 0xF4 (activación del escaneo) | `FA` (limpia el buffer y habilita el escaneo) |
+| `F5` | **Disable** | 0xF5 (desactivación del escaneo) | `FA` (deshabilita el envío de teclas) |
+| `FE` | **Resend** | 0xFE (reenvío del último byte) | Retransmite el último byte enviado |
 | `FF` | **Reset** | 0xFF (reinicia) | `FA` y luego `AA` (self-test) |
 
 ---
