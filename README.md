@@ -1,14 +1,5 @@
 # PS/2 Keyboard
 
-## Responsables
-
-| | 
-| :--- | 
-| **Iván Felipe Maluche Suárez** | 
-| **Kevin Javier González Luna** | 
-| **Santiago Guillén** | 
-| **Felipe Hortúa** | 
-
 ---
 
 ## Protocolo
@@ -289,6 +280,15 @@ graph TD
 </details>
 
 ---
+
+## Responsables
+
+| | 
+| :--- | 
+| **Iván Felipe Maluche Suárez** | 
+| **Kevin Javier González Luna** | 
+| **Santiago Guillén** | 
+| **Felipe Hortúa** | 
 
 ## Créditos y referencias
 
