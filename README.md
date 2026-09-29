@@ -80,9 +80,11 @@ Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (
 
 ### Paridad par/impar
 
-La paridad es una convencion elegida por nostros, los 8 bits de datos mas el bit de paridad deben sumar siempre un número par o impar de unos, esto segun la convencion elegida.
+PS/2 utiliza paridad impar. Los 8 bits de datos más el bit
+de paridad deben contener un número impar de unos.
 
-Quien recibe debe verificar la paridad. Si es incorrecta, el teclado responde como si hubiera recibido un comando inválido (pide reenvío con `FE`).
+El receptor debe verificar la paridad de cada trama.
+
 ### Manejo de bloqueos
 En caso de que el host bloquee el reloj (clock ≥ 100 µs ) el teclado guardara el bytes en un buffer de <strong>16 bytes</strong>. Si se llena, las teclas nuevas se ignoran.
 <details>
