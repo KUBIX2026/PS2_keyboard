@@ -11,7 +11,7 @@ flowchart
     F --> G[Host lee el bit]
     G --> H{Bit 11 enviado,<br/>stop}
     H -- No --> E
-    H -- Sí --> I([Bus vuelve a idle])
+    H -- Sí --> I([clk y data en alto])
 ```
 
 # Diagrama del periférico `Host - Teclado`
