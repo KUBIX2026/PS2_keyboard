@@ -18,10 +18,10 @@ El puerto PS/2 usa dos líneas de señal: **DATA** y **CLK**, más alimentación
 <table align="center">
   <tr>
     <td align="center">
-      <img src="Imagenes/Pines_PS2_female.png" alt="Conector PS/2 hembra" width="220">
+      <img src="../Imagenes/Pines_PS2_female.png" alt="Conector PS/2 hembra" width="220">
     </td>
     <td align="center">
-      <img src="Imagenes/Pines_PS2_male.png" alt="Conector PS/2 macho" width="220">
+      <img src="../Imagenes/Pines_PS2_male.png" alt="Conector PS/2 macho" width="220">
     </td>
     <td>
       <table>
@@ -97,7 +97,7 @@ Para diseñar o emular un dispositivo/host, el dato se modifica o muestrea hacia
 ### Teclado → Host
 
 <p align="center">
-  <img src="Imagenes/DTPS2_device_host.png" alt="PS/2" width="700">
+  <img src="../Imagenes/DTPS2_device_host.png" alt="PS/2" width="700">
 </p>
 
 El teclado genera los pulsos de reloj durante la transmisión:
@@ -115,7 +115,7 @@ El teclado genera los pulsos de reloj durante la transmisión:
 ### Host → Teclado
 
 <p align="center">
-  <img src="Imagenes/DTPS2_host_device.png" alt="PS/2" width="700">
+  <img src="../Imagenes/DTPS2_host_device.png" alt="PS/2" width="700">
 </p>
 
 El teclado sigue generando el reloj, pero el host es quien pone los datos:
@@ -167,7 +167,7 @@ El driver debe recibir byte por byte y decidir, según el prefijo (`E0`, `F0`), 
 ### Tabla de códigos (set 2)
 
 <p align="center">
-  <img src="Imagenes/Scan_codes.png" alt="PS/2" width="700">
+  <img src="../Imagenes/Scan_codes.png" alt="PS/2" width="700">
 </p>
 
 
@@ -233,7 +233,7 @@ El host puede enviar comandos en cualquier momento. **El envío de un comando ti
 <summary>Ver diagrama elaborado en draw.io</summary>
 
 <p align="center">
-  <img src="Imagenes/Diagrama_1.png" alt="Diagrama de flujo del teclado PS/2" />
+  <img src="../Imagenes/Diagrama_1.png" alt="Diagrama de flujo del teclado PS/2" />
 </p>
 
 </details>
@@ -274,7 +274,7 @@ graph TD
 <summary>Ver diagrama de estados</summary>
 
 <p align="center">
-  <img src="Imagenes/FSM_PS2.png" alt="Diagrama de estados PS/2" />
+  <img src="../Imagenes/FSM_PS2.png" alt="Diagrama de estados PS/2" />
 </p>
 
 </details>
