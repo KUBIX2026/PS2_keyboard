@@ -4,7 +4,7 @@
 
 ## Protocolo
 
-PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un **dispositivo** (el teclado) y un **host** (en este proyecto, la FPGA).
+PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un **dispositivo** y un **host**.
 
 - *Host*: quien recibe las teclas y puede enviar comandos.
 - *Dispositivo*: el teclado. El dispositivo **siempre** genera el reloj; el host tiene el control final del bus.
@@ -13,7 +13,7 @@ PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un 
 
 ### Interfaz física
 
-El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (reloj, indica cuándo el dato es válido y puede leerse), más alimentación y tierra.
+El puerto PS/2 usa dos líneas de señal: **DATA** y **CLK**, más alimentación y tierra.
 
 <table align="center">
   <tr>
@@ -53,7 +53,7 @@ El puerto PS/2 usa dos líneas de señal: **DATA** (datos en serie) y **CLK** (r
 
 ### Formato
 
-Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (bit menos significativo al inicio y más significativo al final), 1 bit de paridad impar y 1 bit de parada**.
+Cada byte se envía en una trama serial con 1 bit de inicio, 8 bits de datos (que va desde el bit menos significativo al inicio, hasta el más significativo al final), 1 bit de paridad impar y 1 bit de parada.
 
 | Bit | Función | Valor |
 | :---: | :--- | :--- |
@@ -74,7 +74,7 @@ Cada byte se envía en una trama serial con **1 bit de inicio, 8 bits de datos (
 
 La paridad es una convención elegida por nostros, los 8 bits de datos más el bit de paridad deben sumar siempre un número par o impar de unos, dependiendo de la convención elegida.
 
-Quien recibe debe verificar la paridad. Si es incorrecta, el teclado responde como si hubiera recibido un comando inválido (pide reenvío con `FE`).
+Quien recibe debe verificar la paridad. Si es incorrecta, el teclado responde como si hubiera recibido un comando inválido.
 
 ### Manejo de bloqueos
 En caso de que el host bloquee el reloj (clock ≥ 100 µs), el teclado guardará los bytes en un buffer de <strong>16 bytes</strong>. Si se llena, las teclas nuevas se ignoran.
@@ -90,7 +90,7 @@ En caso de que el host bloquee el reloj (clock ≥ 100 µs), el teclado guardar�
 | Cambio de DATA respecto al flanco de bajada de CLK | entre 5 y 25 µs antes |
 | CLK alto continuo antes de que el teclado transmita | ≥ 50 µs |
 
-Para diseñar o emular un dispositivo/host, el dato se modifica o muestrea hacia la **mitad de cada celda**, unos 15–25 µs después de la transición de reloj correspondiente.
+Para diseñar o emular un dispositivo/host, el dato se modifica o muestrea hacia la mitad de cada celda, unos 15–25 µs después de la transición de reloj correspondiente.
 
 </details>
 
@@ -105,7 +105,7 @@ El teclado genera los pulsos de reloj durante la transmisión:
 1. Verifica que CLK esté en alto (si no, el host está bloqueando y el teclado guarda el dato).
 2. Espera que CLK lleve al menos 50 µs en alto.
 3. Pone el bit de inicio (`0`) en DATA y genera los pulsos de reloj.
-4. Cada bit se coloca en DATA con CLK en alto y **el host lo lee en el flanco de bajada de CLK**.
+4. Cada bit se coloca en DATA con CLK en alto y el host lo lee en el flanco de bajada de CLK.
 5. Tras 11 pulsos (start, 8 datos, paridad, stop) el bus vuelve a idle.
 
 | Ciclo de reloj | 1 | 2 – 9 | 10 | 11 |
