@@ -55,16 +55,25 @@
 
 | Comando | Byte | que hace |
 | :---: | :--- | :--- |
-| Reset | `FF` |  resetea el comando y hace self-test |
+| Reset | `FF` |  resetea el teclado y hace self-test |
 | Enable | `F4` | habilita el envio de scancodes al host |
+| disable | `F5` | deshabilita el envio de scancodes al host |
+| Resend | `FE` | pide el reenvio del ultimo byte enviado del teclado |
+| Echo | `EE` | dato de diagnóstico|
 
 
 ### Comandos disponibles para el teclado
 
 | Comando | Byte | que hace |
 | :---: | :--- | :--- |
-|  |  |   |
-|  |  |  |
+| ACK | `FA` | comfirma que se recibio un comando |
+| Self - test | `AA` | comfirma que se paso el self-test |
+| Echo | `EE` | Respuesta al comando `EE` |
+| Error | `00` / `FF` | Fallo interno |
+| Prefijo Extendido | `E0` | se envia antes del codigo de una tecla extendida |
+| Break | `FE` | pide el reenvio del ultimo byte enviado del host |
+| Resend | `EE` | Respuesta al comando `EE` |
+
 
 ### Secuencia de inicializacion
 
