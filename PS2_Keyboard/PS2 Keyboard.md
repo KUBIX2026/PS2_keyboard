@@ -1,29 +1,5 @@
 # Controles de la consola
 
-<table align="left">
-<tr>
-<td align="left" valign="top">
-<table>
-<thead>
-<tr>
-<th>Pad numérico</th>
-<th>Teclado</th>
-<th>Función</th>
-</tr>
-</thead>
-<tbody>
-<tr><td>9</td><td>W</td><td>Arriba</td></tr>
-<tr><td>.</td><td>A</td><td>Izquierda</td></tr>
-<tr><td>3</td><td>S</td><td>Abajo</td></tr>
-<tr><td>6</td><td>D</td><td>Derecha</td></tr>
-<tr><td>8</td><td>J</td><td>Botón A</td></tr>
-<tr><td>F2</td><td>K</td><td>Botón B</td></tr>
-<tr><td>Enter</td><td>Enter</td><td>Start</td></tr>
-<tr><td>0</td><td>Espacio</td><td>Select</td></tr>
-</tbody>
-</table>
-</td>
-<td align="center">
 <table align="center">
 <tr>
 <td align="center">
@@ -31,9 +7,6 @@
 </td>
 <td align="center">
 <img src="../Imagenes/Controles_padNumerico.svg" alt="Controles del pad numérico" width="500">
-</td>
-</tr>
-</table>
 </td>
 </tr>
 </table>
