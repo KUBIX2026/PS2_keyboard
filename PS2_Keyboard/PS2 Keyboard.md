@@ -1,40 +1,60 @@
 # Controles de la consola
 
-<table align="center">
+<table align="left">
 <tr>
-<td align="center">
-
+<td align="left" valign="top">
 <table>
 <thead>
 <tr>
-<th>Tecla física</th>
+<th>Pad numérico</th>
+<th>Teclado</th>
 <th>Función</th>
 </tr>
 </thead>
 <tbody>
-<tr><td>W</td><td>Arriba</td></tr>
-<tr><td>A</td><td>Izquierda</td></tr>
-<tr><td>S</td><td>Abajo</td></tr>
-<tr><td>D</td><td>Derecha</td></tr>
-<tr><td>J</td><td>Botón B</td></tr>
-<tr><td>K</td><td>Botón A</td></tr>
-<tr><td>Enter</td><td>Start</td></tr>
-<tr><td>Espacio</td><td>Select</td></tr>
+<tr><td>9</td><td>W</td><td>Arriba</td></tr>
+<tr><td>.</td><td>A</td><td>Izquierda</td></tr>
+<tr><td>3</td><td>S</td><td>Abajo</td></tr>
+<tr><td>6</td><td>D</td><td>Derecha</td></tr>
+<tr><td>8</td><td>J</td><td>Botón A</td></tr>
+<tr><td>F2</td><td>K</td><td>Botón B</td></tr>
+<tr><td>Enter</td><td>Enter</td><td>Start</td></tr>
+<tr><td>0</td><td>Espacio</td><td>Select</td></tr>
 </tbody>
 </table>
-
 </td>
 <td align="center">
+<table align="center">
+<tr>
+<td align="center">
 <img src="../Imagenes/Controles.svg" alt="Controles de la consola" width="500">
+</td>
+<td align="center">
+<img src="../Imagenes/Controles_padNumerico.svg" alt="Controles del pad numérico" width="500">
+</td>
+</tr>
+</table>
 </td>
 </tr>
 </table>
 
+<div style="clear: both;"></div>
+
 ## Scan codes
 
 ### para el pad numerico
-
-
+ 
+| Tecla | Make | Break |
+| :---: | :---: | :---: |
+| 9 | `7D` | `F0 7D` |
+| 6 | `74` | `F0 74` |
+| 3 | `7A` | `F0 7A` |
+| `.` | `71` | `F0 71` |
+| 8 | `75` | `F0 75` |
+| F2 | `06` | `F0 06` |
+| Enter | `E0 5A` | `E0 F0 5A` |
+| 0 | `70` | `F0 70` |
+ 
 
 ### para el teclado 
 
@@ -93,4 +113,3 @@ ya despues de esta secuencia de inicio/reset se pueden enviar scancodes
 ## Funcionamiento
 
 El receptor PS/2 entrega el scan code de cada tecla presionada. El driver del teclado al llegar un make code de una tecla mapeada, se activa el bit del boton correspondiente. Al llegar `F0` seguido de la misma tecla, se desactiva. Mientras una tecla se mantiene presionada, el teclado repite el make code.
-
