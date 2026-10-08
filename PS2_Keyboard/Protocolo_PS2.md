@@ -72,7 +72,7 @@ Cada byte se envía en una trama serial con 1 bit de inicio, 8 bits de datos (qu
 
 ### Paridad par/impar
 
-La paridad es una convención elegida por nostros, los 8 bits de datos más el bit de paridad deben sumar siempre un número par o impar de unos, dependiendo de la convención elegida.
+La paridad para el protocolo PS/2 es de tipo impar y la fija el estándar con el que se pretende trabajar.
 
 Quien recibe debe verificar la paridad. Si es incorrecta, el teclado responde como si hubiera recibido un comando inválido.
 
