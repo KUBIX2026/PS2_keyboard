@@ -5,8 +5,8 @@ flowchart
     A([Teclado tiene un byte]) --> B{CLK = 1}
     B -- No --> C[Guardar byte en buffer de 16]
     C --> B
-    B -- Sí --> D[Esperar CLK = 1]
-    D --> E[Teclado pone bit en DATA]
+    B -- Sí --> D[Esperar CLK = 0]
+    D --> E[se llama DATA]
     E --> F[Teclado genera flanco de bajada]
     F --> G[Host lee el bit]
     G --> H{Bit 11 enviado,<br/>stop}
