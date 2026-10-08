@@ -109,7 +109,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 ## Diagrama de bloques
 
-###Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
+### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
 <p align="center">
   <img src="/Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="700">
 </p>
