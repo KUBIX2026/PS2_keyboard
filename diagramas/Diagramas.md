@@ -2,16 +2,34 @@
 
 ```mermaid
 flowchart
-    A([Teclado tiene un byte]) --> B{CLK = 1 y DATA=1}
-    B -- No --> C[Guardar byte en buffer de 16]
-    C --> B
-    B -- Sí --> D[Esperar ≥ 50 µs CLK = 0]
-    D --> E[envía la DATA]
-    E --> F[Teclado genera flanco de bajada]
-    F --> G[Host lee el bit]
-    G --> H{Bit 11 calculando la paridad impar,<br/>stop}
-    H -- No --> E
-    H -- Sí --> I([CLK = 1,Data = 1])
+    A([Teclado recibe un byte]) --> B{¿Buffer lleno?}
+    B -- Sí, 16 bytes --> C[Ignorar la tecla / byte recibido]
+    C --> A
+    B -- No --> D[Guardar byte al final del buffer FIFO]
+    D --> E{¿CLK = 1 y DATA = 1?}
+    E -- No --> E
+    E -- Sí --> F{¿Hay bytes en el buffer?}
+    F -- No --> E
+    F -- Sí --> G[Extraer el byte más antiguo del buffer<br/>FIFO: primero en entrar, primero en salir]
+    G --> H[Construir trama de 11 bits:<br/>START, D0, D1, D2, D3, D4, D5, D6, D7,<br/>PARIDAD IMPAR, STOP]
+    H --> I[Contador = 0<br/>Bit actual = START]
+    I --> J[Poner bit actual en DATA<br/>mantener CLK = 1]
+    J --> K[Bajar CLK = 0]
+    K --> L[Host muestrea DATA<br/>en el flanco de bajada]
+    L --> M[Subir CLK = 1]
+    M --> N{¿Host bajó CLK<br/>antes del bit 11?}
+    N -- Sí --> O[ABORTAR transmisión actual]
+    O --> P[Conservar el mismo byte<br/>para retransmitirlo completo]
+    P --> Q{¿CLK vuelve a estar libre<br/>y permanece en 1?}
+    Q -- No --> Q
+    Q -- Sí --> I
+    N -- No --> R[Contador = Contador + 1]
+    R --> S{¿Contador = 11?}
+    S -- No --> T[Seleccionar siguiente bit:<br/>D0 → D1 → ... → D7 → PARIDAD → STOP]
+    T --> J
+    S -- Sí --> U[Trama completa transmitida<br/>11 bits: START + 8 DATA + PARIDAD + STOP]
+    U --> V([DATA = 1<br/>CLK = 1<br/>línea en reposo])
+    V --> E
 ```
 
 # Diagrama del periférico `Host - Teclado`
