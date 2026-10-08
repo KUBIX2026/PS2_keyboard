@@ -62,7 +62,7 @@
 | ACK | `FA` | comfirma que se recibio un comando |
 | Self - test | `AA` | comfirma que se paso el self-test |
 | Echo | `EE` | Respuesta al comando `EE` |
-| Error | `00` / `FF` | Fallo interno |
+| Error | `00` / `FF` | para avisar de Fallo interno |
 | Prefijo Extendido | `E0` | se envia antes del codigo de una tecla extendida |
 | Break | `FE` | pide el reenvio del ultimo byte enviado del host |
 | Resend | `EE` | Respuesta al comando `EE` |

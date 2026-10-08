@@ -1,4 +1,4 @@
-# Esta plantilla no es de mi propiedad.
+ Esta plantilla no es de mi propiedad.
 
 Toda la documentación y diseño de esta plantilla se encuentra dentro del siguiente repositorio el cual **no me pertenece** y es propiedad del usuario [@cicamargo](https://github.com/cicamargoba).
 
