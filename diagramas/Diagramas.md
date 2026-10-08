@@ -9,7 +9,7 @@ flowchart
     D --> E[envía la DATA]
     E --> F[Teclado genera flanco de bajada]
     F --> G[Host lee el bit]
-    G --> H{Bit 11 enviado,<br/>stop}
+    G --> H{Bit 11 calculando la paridad impar,<br/>stop}
     H -- No --> E
     H -- Sí --> I([CLK = 1,Data = 1])
 ```
