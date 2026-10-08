@@ -6,7 +6,7 @@ flowchart
     B -- No --> C[Guardar byte en buffer de 16]
     C --> B
     B -- Sí --> D[Esperar CLK = 0]
-    D --> E[se llama DATA]
+    D --> E[envía la DATA]
     E --> F[Teclado genera flanco de bajada]
     F --> G[Host lee el bit]
     G --> H{Bit 11 enviado,<br/>stop}
