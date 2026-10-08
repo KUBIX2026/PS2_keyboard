@@ -1,5 +1,10 @@
- Esta plantilla no es de mi propiedad.
+# PS2_keyboard
 
-Toda la documentación y diseño de esta plantilla se encuentra dentro del siguiente repositorio el cual **no me pertenece** y es propiedad del usuario [@cicamargo](https://github.com/cicamargoba).
+Grupo para el desarrollo del driver y funcionalidades del teclado.
 
-[Github de digital_UN](https://github.com/cicamargoba/digital_UN/tree/main/2026_1)
+## Índice
+
+- [Protocolo PS/2](https://github.com/noNintendo2026/PS2_keyboard/blob/main/Protocolo_PS2.md): interfaz física, trama, scan codes, comandos y diagramas de funcionamiento.
+- [PS2 Keyboard](https://github.com/noNintendo2026/PS2_keyboard/blob/main/PS2%20Keyboard.md): controles de la consola, scan codes usados, comandos, secuencia de inicialización y diagramas de flujo y de bloques.
+
+---
