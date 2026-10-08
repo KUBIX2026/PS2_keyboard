@@ -3,10 +3,10 @@
 <table align="center">
 <tr>
 <td align="center">
-<img src="../Imagenes/Controles.svg" alt="Controles de la consola" width="500">
+<img src="Imagenes/Controles.svg" alt="Controles de la consola" width="500">
 </td>
 <td align="center">
-<img src="../Imagenes/Controles_padNumerico.svg" alt="Controles del pad numérico" width="500">
+<img src="Imagenes/Controles_padNumerico.svg" alt="Controles del pad numérico" width="500">
 </td>
 </tr>
 </table>
