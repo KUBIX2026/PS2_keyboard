@@ -91,12 +91,17 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 `FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
 
+
 ## Diagrama de flujo para protocolo
 
 ### Diagrama de flujo para comunicación teclado-host
 
-[Ver diagrama (PDF)](../Imagenes/Diagrama%20flujo%20teclado-host1.pdf)
+<p align="center">
+  <img src="../Imagenes/Diagrama%20flujo%20teclado-host1.png" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+</p>
 
 ### Diagrama de flujo para comunicación host-teclado
 
-[Ver diagrama (PDF)](../Imagenes/Diagrama%20flujo%20host-teclado.pdf)
+<p align="center">
+  <img src="../Imagenes/Diagrama%20flujo%20host-teclado.png" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+</p>
