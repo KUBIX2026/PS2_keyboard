@@ -90,3 +90,18 @@ El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya 
 El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, llegó `E0` que entonces espera a la siguente trama porque es una tecla extendida, y si antes llegó `F0` que espera la siguiente trama para soltar esa tecla.
 
 `FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
+
+
+## Diagrama de flujo para protocolo
+
+### Diagrama de flujo para comunicación teclado-host
+
+<p align="center">
+  <img src="../Imagenes/Diagrama%20flujo%20teclado-host1.png" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+</p>
+
+### Diagrama de flujo para comunicación host-teclado
+
+<p align="center">
+  <img src="../Imagenes/Diagrama%20flujo%20host-teclado.png" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+</p>
