@@ -81,8 +81,12 @@ sequenceDiagram
     H->>K: F4, Enable
     K-->>H: FA, ACK
 ```
-ya despues de esta secuencia de inicio/reset se pueden enviar scancodes
+
+El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario después de un `F5`.
+
 
 ## Funcionamiento
 
-El receptor PS/2 entrega el scan code de cada tecla presionada. El driver del teclado al llegar un make code de una tecla mapeada, se activa el bit del boton correspondiente. Al llegar `F0` seguido de la misma tecla, se desactiva. Mientras una tecla se mantiene presionada, el teclado repite el make code.
+El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, llegó `E0` que entonces espera a la siguente trama porque es una tecla extendida, y si antes llegó `F0` que espera la siguiente trama para soltar esa tecla.
+
+`FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
