@@ -226,7 +226,7 @@ El host puede enviar comandos en cualquier momento. **El envío de un comando ti
 
 ---
 
-## 5. Diagramas de flujo del funcionamiento
+## 5. Diagramas de flujo de alto nivel
 
 
 <details>
@@ -268,17 +268,6 @@ graph TD
 ```
 
 </details>
-
-
-<details>
-<summary>Ver diagrama de estados</summary>
-
-<p align="center">
-  <img src="Imagenes/FSM_PS2.png" alt="Diagrama de estados PS/2" />
-</p>
-
-</details>
-
 ---
 
 ## Responsables
