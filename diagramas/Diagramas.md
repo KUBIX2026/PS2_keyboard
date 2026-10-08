@@ -3,9 +3,9 @@
 ```mermaid
 flowchart
     A([Teclado recibe un byte]) --> B{¿Buffer lleno?}
-    B -- Sí, 16 bytes --> C[Ignorar la tecla / byte recibido]
+    B -- Sí --> C[Ignorar la tecla / byte recibido]
     C --> A
-    B -- No --> D[Guardar byte al final del buffer FIFO]
+    B -- No --> D[Guardar byte al final del buffer]
     D --> E{¿CLK = 1 y DATA = 1?}
     E -- No --> E
     E -- Sí --> F{¿Hay bytes en el buffer?}
@@ -25,9 +25,9 @@ flowchart
     Q -- Sí --> I
     N -- No --> R[Contador = Contador + 1]
     R --> S{¿Contador = 11?}
-    S -- No --> T[Seleccionar siguiente bit:<br/>D0 → D1 → ... → D7 → PARIDAD → STOP]
+    S -- No --> T[Seleccionar siguiente bit]
     T --> J
-    S -- Sí --> U[Trama completa transmitida<br/>11 bits: START + 8 DATA + PARIDAD + STOP]
+    S -- Sí --> U[Trama completa transmitida<br/>11 bits]
     U --> V([DATA = 1<br/>CLK = 1<br/>línea en reposo])
     V --> E
 ```
