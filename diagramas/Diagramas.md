@@ -2,14 +2,14 @@
 
 ```mermaid
 flowchart
-    A([Teclado tiene un byte]) --> B{CLK = 1}
+    A([Teclado tiene un byte]) --> B{CLK = 1 y DATA=1}
     B -- No --> C[Guardar byte en buffer de 16]
     C --> B
-    B -- Sí --> D[Esperar CLK = 0]
+    B -- Sí --> D[Esperar ≥ 50 µs CLK = 0]
     D --> E[envía la DATA]
     E --> F[Teclado genera flanco de bajada]
     F --> G[Host lee el bit]
-    G --> H{Bit 11 enviado,<br/>stop}
+    G --> H{Bit 11 calculando la paridad impar,<br/>stop}
     H -- No --> E
     H -- Sí --> I([CLK = 1,Data = 1])
 ```
