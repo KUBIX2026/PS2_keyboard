@@ -1,7 +1,5 @@
 # PS2_keyboard
 
-Grupo para el desarrollo del driver y funcionalidades del teclado.
-
 ## Índice
 
 - [Protocolo PS/2](https://github.com/noNintendo2026/PS2_keyboard/blob/main/Protocolo_PS2.md): interfaz física, trama, scan codes, comandos y diagramas de funcionamiento.
