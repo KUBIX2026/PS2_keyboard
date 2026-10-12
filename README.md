@@ -122,13 +122,13 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 ### Diagrama de flujo para comunicación teclado-host
 
 <p align="center">
-  <img src="Imagenes/Diagrama%20de%20flujo%20teclado-host1.png" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+  <img src="Imagenes/Diagrama%20en%20blanco%20-%20Teclado%20-%5F%20host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
 </p>
 
 ### Diagrama de flujo para comunicación host-teclado
 
 <p align="center">
-  <img src="Imagenes/Diagrama%20flujo%20host-teclado.png" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+  <img src="Imagenes/Diagrama%20en%20blanco%20-%20host%20-%5F%20teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
 </p>
 
 
