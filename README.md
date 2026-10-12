@@ -49,6 +49,7 @@
 | Comando | Byte | que hace |
 | :---: | :--- | :--- |
 | Reset | `FF` |  resetea el teclado y hace self-test |
+| Read ID | `F2` | devuelve `FA` y luego `AB 83`, el identificador del teclado PS/2 |
 | Enable | `F4` | habilita el envio de scancodes al host |
 | disable | `F5` | deshabilita el envio de scancodes al host |
 | Resend | `FE` | pide el reenvio del ultimo byte enviado del teclado |
@@ -67,8 +68,20 @@
 | Break | `FE` | pide el reenvio del ultimo byte enviado del host |
 | Resend | `EE` | Respuesta al comando `EE` |
 
+## Al conectar al puerto
+### Identificar Periferico
+```mermaid
+graph TD
+    A[Host Envia comando F2] --> B{Recibe ACK?}
 
-### Secuencia de inicializacion
+    B -- No  --> C[Es Control NES]
+    B -- Si --> D{Cuántos bytes de ID envía?}
+
+    D -- 1 byte / 00 --> E[Mouse PS/2]
+    D -- 2 bytes / AB y 83 --> F[Teclado PS/2]
+```
+
+### Secuencia de inicializacion teclado
 
 ```mermaid
 sequenceDiagram
@@ -82,7 +95,7 @@ sequenceDiagram
     K-->>H: FA, ACK
 ```
 
-El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario después de un `F5`.
+El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5`.
 
 
 ## Funcionamiento
@@ -91,19 +104,31 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 `FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
 
-
 ## Diagrama de flujo para protocolo
+
+### Diagrama de flujo del funcionamiento
+
+<p align="center">
+  <img src="Imagenes/Diagrama%20en%20blanco.svg" alt="Diagrama de flujo del funcionamiento" width="700">
+</p>
+
+**Rutas de comunicación:**
+
+- [Diagrama host → teclado](Imagenes/Diagrama%20flujo%20host-teclado.png): comandos enviados por el host.
+- [Diagrama teclado → host](Imagenes/Diagrama%20de%20flujo%20teclado-host1.png): recepción y procesamiento de scan codes.
+
+
 
 ### Diagrama de flujo para comunicación teclado-host
 
 <p align="center">
-  <img src="/Imagenes/Diagrama%20de%20flujo%20teclado-host1.png" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+  <img src="Imagenes/Diagrama%20de%20flujo%20teclado-host1.png" alt="Diagrama de flujo para comunicación teclado-host" width="700">
 </p>
 
 ### Diagrama de flujo para comunicación host-teclado
 
 <p align="center">
-  <img src="/Imagenes/Diagrama%20flujo%20host-teclado.png" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+  <img src="Imagenes/Diagrama%20flujo%20host-teclado.png" alt="Diagrama de flujo para comunicación host-teclado" width="700">
 </p>
 
 
@@ -111,5 +136,5 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 ### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
 <p align="center">
-  <img src="/Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="700">
+  <img src="Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="700">
 </p>

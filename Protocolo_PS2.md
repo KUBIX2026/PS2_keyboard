@@ -218,6 +218,7 @@ El host puede enviar comandos en cualquier momento. **El envío de un comando ti
 | `ED` | **Set LEDs** | Segundo byte con el estado de los LEDs (ver abajo) | `FA` tras el comando y `FA` tras el argumento |
 | `EE` | **Echo** | 0xEE (dato de diagnóstico)| `EE` |
 | `F0` | **Set scan code set** | Segundo byte: `01`, `02` o `03`. Con `00` se consulta el set en uso | `FA` y espera el argumento (con `00`, devuelve el set actual) |
+| `F2` | **Read ID** | No requiere argumento adicional | `FA` y luego `AB 83` (ID del teclado PS/2) |
 | `F3` | **Set typematic rate/delay** | Segundo byte: bits 4:0 tasa de repetición, bits 6:5 retardo inicial | `FA` y espera el argumento |
 | `F4` | **Enable** | 0xF4 (activación del escaneo) | `FA` (limpia el buffer y habilita el escaneo) |
 | `F5` | **Disable** | 0xF5 (desactivación del escaneo) | `FA` (deshabilita el envío de teclas) |
@@ -287,6 +288,7 @@ propiedad de [@cicamargo](https://github.com/cicamargoba).
 
 Referencias técnicas:
 
+- Infineon, *PS2D Software Module Datasheet (PS2D-001-13681)*: <https://www.infineon.com/assets/row/public/documents/30/396/infineon-ps2d-001-13681-software-module-datasheets-en.pdf>
 - A. Chapweske, *The PS/2 Mouse/Keyboard Protocol*: <https://www.burtonsys.com/ps2_chapweske.htm>
 - Network Technologies Inc., *PS/2 Keyboard & Mouse Protocols*: <https://www.networktechinc.com/ps2-prots.html>
 - S. A. Edwards, *The PS/2 Keyboard and Mouse Interface* (Columbia University): <https://www.cs.columbia.edu/~sedwards/classes/2005/emsys-summer/ps2-keyboard.pdf>
