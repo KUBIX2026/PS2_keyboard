@@ -71,7 +71,7 @@
 ## Al conectar al puerto
 ### Identificar Periferico
 ```mermaid
-graph TD
+flowchart
     A[Host Envia comando F2] --> B{Recibe ACK?}
 
     B -- No  --> C[Es Control NES]
