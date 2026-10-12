@@ -109,7 +109,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 ### Diagrama de flujo del funcionamiento
 
 <p align="center">
-  <img src="Imagenes/Diagrama%20en%20blanco.svg" alt="Diagrama de flujo del funcionamiento" width="700">
+  <img src="Imagenes/Diagrama%20funcionamiento.svg" alt="Diagrama de flujo del funcionamiento" width="700">
 </p>
 
 **Rutas de comunicación:**
