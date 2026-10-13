@@ -11,6 +11,12 @@ PS/2 es una interfaz serial **síncrona, bidireccional y half-duplex** entre un 
 - *Bidireccional*: La comunicación se lleva a cabo del teclado al host y viceversa.
 - *Half-duplex*: La información viaja en ambos sentidos, pero únicamente envía o recibe en el momento, nunca hace ambas cosas a la vez.
 
+Para una mayor comprensión en cuanto al concepto de half-duplex o semidúplex, se puede tomar en cuenta la siguiente gráfica:
+
+<p align="center">
+  <img src="Imagenes/semiduplexhighway.jfif" alt="PS/2" width="700">
+</p>
+
 ### Interfaz física
 
 El puerto PS/2 usa dos líneas de señal: **DATA** y **CLK**, más alimentación y tierra.
