@@ -5,7 +5,7 @@ El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la
 <table align="center">
 <tr>
 <td align="center">
-<img src="Imagenes/Controles.svg" alt="Controles de la consola" width="500">
+<img src="Imagenes/Controles.svg" alt="Controles de la consola" width="445">
 </td>
 <td align="center">
 <img src="Imagenes/Controles_padNumerico.svg" alt="Controles del pad numérico" width="500">
@@ -59,18 +59,6 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
   <img src="Imagenes/Diagrama_Funcionalidad_v2.svg" alt="Diagrama de flujo del funcionamiento" width="700">
 </p>
 
-### Diagrama de flujo para comunicación teclado-host
-
-<p align="center">
-  <img src="Imagenes/Diagrama%20teclado_host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
-</p>
-
-### Diagrama de flujo para comunicación host-teclado
-
-<p align="center">
-  <img src="Imagenes/Diagrama%20host_teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
-</p>
-
 
 ## Diagrama de bloques
 
@@ -80,36 +68,30 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 </p>
 
 
+## Diagrama de flujo para comunicación teclado-host
+<p align="center">
+  <img src="Imagenes/Diagrama%20teclado_host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+</p>
+
+## Diagrama de flujo para comunicación host-teclado
+
+<p align="center">
+  <img src="Imagenes/Diagrama%20host_teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+</p>
+
+
 ## Scan codes
 
-### para el pad numerico
- 
-| Tecla | Make | Break |
-| :---: | :---: | :---: |
-| 9 | `7D` | `F0 7D` |
-| 6 | `74` | `F0 74` |
-| 3 | `7A` | `F0 7A` |
-| `.` | `71` | `F0 71` |
-| 8 | `75` | `F0 75` |
-| F2 | `06` | `F0 06` |
-| Enter | `E0 5A` | `E0 F0 5A` |
-| 0 | `70` | `F0 70` |
- 
-
-### para el teclado 
-
-| Tecla | Make | Break |
-| :---: | :---: | :---: |
-| W | `1D` | `F0 1D` |
-| A | `1C` | `F0 1C` |
-| S | `1B` | `F0 1B` |
-| D | `23` | `F0 23` |
-| J | `3B` | `F0 3B` |
-| K | `42` | `F0 42` |
-| Enter | `5A` | `F0 5A` |
-| Espacio | `29` | `F0 29` |
-
-## Comandos
+| Bit | Botón NES | Teclado | Pad numérico | Scan code teclado (make / break) | Scan code pad (make / break) |
+|:---:|-----------|---------|--------------|----------------------------------|------------------------------|
+| 0 | A      | J       | 8     | `3B` / `F0 3B` | `75` / `F0 75` |
+| 1 | B      | K       | F2    | `42` / `F0 42` | `06` / `F0 06` |
+| 2 | Select | Espacio | 0     | `29` / `F0 29` | `70` / `F0 70` |
+| 3 | Start  | Enter   | Enter | `5A` / `F0 5A` | `E0 5A` / `E0 F0 5A` |
+| 4 | Up     | W       | 2     | `1D` / `F0 1D` | `72` / `F0 72` |
+| 5 | Down   | S       | 3     | `1B` / `F0 1B` | `7A` / `F0 7A` |
+| 6 | Left   | A       | .     | `1C` / `F0 1C` | `71` / `F0 71` |
+| 7 | Right  | D       | 6     | `23` / `F0 23` | `74` / `F0 74` |
 
 ### Comandos disponibles para el host
 
