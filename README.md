@@ -1,3 +1,5 @@
+# Funcion dentro del proyecto
+El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la FPGA que se usara en el proyecto KUBIX2026 con un teclado regido bajo el protocolo de comunicacion PS2, para este fin el driver hara recibira las instrucciones en el formato propio de cada una de estos dos dispositivos y trabajara como un traductor capaz de extraer y formatear nuevamente al lenguaje adecuado para que el disposito que lo reciba pueda procesas la informacion.
 # Controles de la consola
 
 <table align="center">
