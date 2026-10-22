@@ -56,19 +56,19 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 ### Diagrama de flujo del funcionamiento
 
 <p align="center">
-  <img src="Imagenes/Diagrama_Funcionalidad.svg" alt="Diagrama de flujo del funcionamiento" width="700">
+  <img src="Imagenes/Diagrama_Funcionalidad_v2.svg" alt="Diagrama de flujo del funcionamiento" width="700">
 </p>
 
 ### Diagrama de flujo para comunicación teclado-host
 
 <p align="center">
-  <img src="Imagenes/Diagrama%20en%20blanco%20-%20Teclado%20-%5F%20host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+  <img src="Imagenes/Diagrama%20teclado_host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
 </p>
 
 ### Diagrama de flujo para comunicación host-teclado
 
 <p align="center">
-  <img src="Imagenes/Diagrama%20en%20blanco%20-%20host%20-%5F%20teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+  <img src="Imagenes/Diagrama%20host_teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
 </p>
 
 
@@ -76,7 +76,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 ### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
 <p align="center">
-  <img src="Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
+  <img src="Imagenes/Diagrama-de-bloques_v2.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
 </p>
 
 
@@ -144,4 +144,3 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 | Kevin Javier González Luna |
 | Santiago Guillén |
 | Felipe Hortúa |
-

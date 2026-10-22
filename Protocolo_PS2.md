@@ -240,7 +240,7 @@ El host puede enviar comandos en cualquier momento. **El envío de un comando ti
 <summary>Ver diagrama elaborado en draw.io</summary>
 
 <p align="center">
-  <img src="Imagenes/Diagrama_1.png" alt="Diagrama de flujo del teclado PS/2" />
+  <img src="Imagenes/Diagrama_Funcionalidad_v2.svg" alt="Diagrama de flujo del teclado PS/2" />
 </p>
 
 </details>
