@@ -13,6 +13,71 @@
 
 <div style="clear: both;"></div>
 
+## Al conectar al puerto
+### Identificar Periferico
+```mermaid
+flowchart
+    A[Host Envia comando F2] --> B{Recibe ACK?}
+
+    B -- No  --> C[Es Control NES]
+    B -- Si --> D{Cuántos bytes de ID envía?}
+
+    D -- 1 byte / 00 --> E[Mouse PS/2]
+    D -- 2 bytes / AB y 83 --> F[Teclado PS/2]
+```
+
+### Secuencia de inicializacion teclado
+
+```mermaid
+sequenceDiagram
+    participant H as Host
+    participant K as Teclado
+
+    H->>K: FF, Reset
+    K-->>H: FA, ACK
+    K-->>H: AA, Self-test OK
+    H->>K: F4, Enable
+    K-->>H: FA, ACK
+```
+
+El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5`.
+
+
+## Funcionamiento
+
+El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, llegó `E0` que entonces espera a la siguente trama porque es una tecla extendida, y si antes llegó `F0` que espera la siguiente trama para soltar esa tecla.
+
+`FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
+
+## Diagrama de flujo para protocolo
+
+### Diagrama de flujo del funcionamiento
+
+<p align="center">
+  <img src="Imagenes/Diagrama_Funcionalidad.svg" alt="Diagrama de flujo del funcionamiento" width="700">
+</p>
+
+### Diagrama de flujo para comunicación teclado-host
+
+<p align="center">
+  <img src="Imagenes/Diagrama%20en%20blanco%20-%20Teclado%20-%5F%20host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
+</p>
+
+### Diagrama de flujo para comunicación host-teclado
+
+<p align="center">
+  <img src="Imagenes/Diagrama%20en%20blanco%20-%20host%20-%5F%20teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+</p>
+
+
+## Diagrama de bloques
+
+### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
+<p align="center">
+  <img src="Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
+</p>
+
+
 ## Scan codes
 
 ### para el pad numerico
@@ -68,66 +133,13 @@
 | Break | `FE` | pide el reenvio del ultimo byte enviado del host |
 | Resend | `EE` | Respuesta al comando `EE` |
 
-## Al conectar al puerto
-### Identificar Periferico
-```mermaid
-flowchart
-    A[Host Envia comando F2] --> B{Recibe ACK?}
 
-    B -- No  --> C[Es Control NES]
-    B -- Si --> D{Cuántos bytes de ID envía?}
+## Responsables
 
-    D -- 1 byte / 00 --> E[Mouse PS/2]
-    D -- 2 bytes / AB y 83 --> F[Teclado PS/2]
-```
+| Integrante |
+| :--- |
+| Iván Felipe Maluche Suárez |
+| Kevin Javier González Luna |
+| Santiago Guillén |
+| Felipe Hortúa |
 
-### Secuencia de inicializacion teclado
-
-```mermaid
-sequenceDiagram
-    participant H as Host
-    participant K as Teclado
-
-    H->>K: FF, Reset
-    K-->>H: FA, ACK
-    K-->>H: AA, Self-test OK
-    H->>K: F4, Enable
-    K-->>H: FA, ACK
-```
-
-El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5`.
-
-
-## Funcionamiento
-
-El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, llegó `E0` que entonces espera a la siguente trama porque es una tecla extendida, y si antes llegó `F0` que espera la siguiente trama para soltar esa tecla.
-
-`FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
-
-## Diagrama de flujo para protocolo
-
-### Diagrama de flujo del funcionamiento
-
-<p align="center">
-  <img src="Imagenes/Diagrama%20funcionamiento.svg" alt="Diagrama de flujo del funcionamiento" width="700">
-</p>
-
-### Diagrama de flujo para comunicación teclado-host
-
-<p align="center">
-  <img src="Imagenes/Diagrama%20en%20blanco%20-%20Teclado%20-%5F%20host.svg" alt="Diagrama de flujo para comunicación teclado-host" width="700">
-</p>
-
-### Diagrama de flujo para comunicación host-teclado
-
-<p align="center">
-  <img src="Imagenes/Diagrama%20en%20blanco%20-%20host%20-%5F%20teclado.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
-</p>
-
-
-## Diagrama de bloques
-
-### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
-<p align="center">
-  <img src="Imagenes/diagrama-de-bloques.png" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
-</p>

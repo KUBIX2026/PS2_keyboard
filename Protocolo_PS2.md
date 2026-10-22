@@ -273,12 +273,12 @@ graph TD
 
 ## Responsables
 
-| | 
-| :--- | 
-| **Iván Felipe Maluche Suárez** | 
-| **Kevin Javier González Luna** | 
-| **Santiago Guillén** | 
-| **Felipe Hortúa** | 
+| Integrante |
+| :--- |
+| Iván Felipe Maluche Suárez |
+| Kevin Javier González Luna |
+| Santiago Guillén |
+| Felipe Hortúa |
 
 ## Créditos y referencias
 
