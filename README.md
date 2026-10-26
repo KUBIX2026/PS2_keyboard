@@ -1,5 +1,22 @@
 # Funcion dentro del proyecto
 El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la FPGA que se usara en el proyecto KUBIX2026 con un teclado regido bajo el protocolo de comunicacion PS2, para este fin el driver hara recibira las instrucciones en el formato propio de cada una de estos dos dispositivos y trabajara como un traductor capaz de extraer y formatear nuevamente al lenguaje adecuado para que el disposito que lo reciba pueda procesas la informacion.
+
+# Indice
+
+- [Controles de la consola](#controles-de-la-consola)
+- [Acciones del driver al conectar el dispositivo al puerto](#acciones-del-driver-al-conectar-el-dispositivo-al-puerto)
+  - [Identificar periférico](#identificar-periferico)
+  - [Secuencia de inicialización del teclado](#secuencia-de-inicializacion-teclado)
+- [Diagrama de flujo para protocolo](#diagrama-de-flujo-para-protocolo)
+  - [Diagrama de flujo del funcionamiento](#diagrama-de-flujo-del-funcionamiento)
+- [Diagrama de bloques](#diagrama-de-bloques)
+- [Diagrama de flujo para comunicación teclado-host](#diagrama-de-flujo-para-comunicacion-teclado-host)
+- [Diagrama de flujo para comunicación host-teclado](#diagrama-de-flujo-para-comunicacion-host-teclado)
+- [Scan codes](#scan-codes)
+  - [Comandos disponibles para el host](#comandos-disponibles-para-el-host)
+  - [Comandos disponibles para el teclado](#comandos-disponibles-para-el-teclado)
+- [Protocolo PS/2](./Protocolo_PS2.md)
+
 # Controles de la consola
 
 <table align="center">
@@ -44,20 +61,16 @@ sequenceDiagram
 
 El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5`.
 
-
-## Funcionamiento
-
-El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, llegó `E0` que entonces espera a la siguente trama porque es una tecla extendida, y si antes llegó `F0` que espera la siguiente trama para soltar esa tecla.
-
-`FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
-
 ## Diagrama de flujo para protocolo
+
+El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar varias cosas, llegó `F0` que me indica que se se va a soltar la tecla de la siguiente trama y `F0`  es tecla extendida e igualmente tiene que esperar a la siguente trama, lo demas son repuestas de control, `FA`, `FE`, `AA`, etc.
+
 <details>
 <summary><strong>Lista de variables representadas en el flujo</strong></summary>
 <ul>
   <li>Found: Representa si el protocolo ha recibido (1) o no ha recibido(0) la trama de datos, esta planteado principalmente para manejo de errores</li>
   <li>E0: indica la deteccion del comando de tecla extendida, el siguiente comando sera de una tecla extendida</li>
-  <li>F0: Indica un break, la tecla anterior se ha dejado de presionar</strong>.</li>
+  <li>F0: Indica un break, la trama que sigue indica que esa tecla se ha dejado de presionar</strong>.</li>
   <li>Key, Ext_Key: Tecla presionada por el usuario y procesada por el controlador<strong></strong> </li>
 </ul>
 </details>
