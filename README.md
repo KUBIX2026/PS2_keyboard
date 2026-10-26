@@ -104,7 +104,6 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 | Resend | `FE` | pide el reenvio del ultimo byte enviado del teclado |
 | Echo | `EE` | dato de diagnóstico|
 
-
 ### Comandos disponibles para el teclado
 
 | Comando | Byte | que hace |
@@ -114,9 +113,8 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 | Echo | `EE` | Respuesta al comando `EE` |
 | Error | `00` / `FF` | para avisar de Fallo interno |
 | Prefijo Extendido | `E0` | se envia antes del codigo de una tecla extendida |
-| Break | `FE` | pide el reenvio del ultimo byte enviado del host |
-| Resend | `EE` | Respuesta al comando `EE` |
-
+| Resend | `FE` | pide el reenvio del ultimo byte enviado del host |
+| break | `Fo` | indica que se esta dejando de presionar la tecla de la siguiente trama |
 
 ## Responsables
 
