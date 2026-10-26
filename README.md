@@ -15,7 +15,7 @@ El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la
 
 <div style="clear: both;"></div>
 
-## Al conectar al puerto
+## acciones del driver al conectar el dispositivo al puerto
 ### Identificar Periferico
 ```mermaid
 flowchart
@@ -52,6 +52,15 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 `FA`, `AA` y `FE` no corresponden a ninguna tecla de los scan codes, así que el driver los ignora.
 
 ## Diagrama de flujo para protocolo
+<details>
+<summary><strong>Lista de variables representadas en el flujo</strong></summary>
+<ul>
+  <li>Found: Representa si el protocolo ha recibido (1) o no ha recibido(0) la trama de datos, esta planteado principalmente para manejo de errores</li>
+  <li>E0: indica la deteccion del comando de tecla extendida, el siguiente comando sera de una tecla extendida</li>
+  <li>F0: Indica un break, la tecla anterior se ha dejado de presionar</strong>.</li>
+  <li>Key, Ext_Key: Tecla presionada por el usuario y procesada por el controlador<strong></strong> </li>
+</ul>
+</details>
 
 ### Diagrama de flujo del funcionamiento
 
@@ -62,7 +71,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 
 ## Diagrama de bloques
 
-### Diagrama de bloques general como traducción de los diagramas de flujo de manera más distendida. 
+ Diagrama planteado para visualizar las funciones del controlador como una serie de bloques con entradas y salidas, debido a su direccionalidad las funciones aqui planteadas deberan ser capaces de realizar el formateo y envio tanto en un sentido como en el otro.
 <p align="center">
   <img src="Imagenes/Diagrama-de-bloques_v2.svg" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
 </p>
@@ -114,7 +123,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar 2 cosas, 
 | Error | `00` / `FF` | para avisar de Fallo interno |
 | Prefijo Extendido | `E0` | se envia antes del codigo de una tecla extendida |
 | Resend | `FE` | pide el reenvio del ultimo byte enviado del host |
-| break | `Fo` | indica que se esta dejando de presionar la tecla de la siguiente trama |
+| break | `F0` | indica que se esta dejando de presionar la tecla de la siguiente trama |
 
 ## Responsables
 
