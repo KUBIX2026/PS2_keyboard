@@ -4,7 +4,7 @@ El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la
 # Indice
 
 - [Controles de la consola](#controles-de-la-consola)
-- [Acciones del driver al conectar el dispositivo al puerto](#al-conectar-el-dispositivo-al-puerto)
+- [Inicialización](#inicializacion)
   - [Identificar periférico](#identificar-periferico)
   - [Secuencia de inicialización del teclado](#secuencia-de-inicializacion-teclado)
 - [Diagrama de flujo para protocolo](#diagrama-de-flujo-para-protocolo)
