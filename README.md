@@ -35,6 +35,10 @@ El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la
 ## Inicializacion
 
 ### Identificar Periferico 
+
+<details>
+<summary><strong>Mostrar diagrama de identificación del periférico</strong></summary>
+
 ```mermaid
 flowchart
     A[Host Envia comando F2] --> B{Recibe ACK?}
@@ -45,6 +49,8 @@ flowchart
     D -- 1 byte / 00 --> E[Mouse PS/2]
     D -- 2 bytes / AB y 83 --> F[Teclado PS/2]
 ```
+
+</details>
 
 ### Secuencia de inicializacion teclado
 
