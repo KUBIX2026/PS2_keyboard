@@ -70,7 +70,7 @@ El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya 
 
 ## Diagrama de flujo para el driver
 
-El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar varias cosas, llegó `F0` que me indica que se se va a soltar la tecla de la siguiente trama y `F0`  es tecla extendida e igualmente tiene que esperar a la siguente trama, lo demas son repuestas de control, `FA`, `FE`, `AA`, etc.
+El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar varias cosas, llegó `F0` que me indica que se va a soltar la tecla de la siguiente trama y `E0`  es tecla extendida e igualmente tiene que esperar a la siguente trama, lo demas son repuestas de control, `FA`, `FE`, `AA`, etc.
 
 <details>
 <summary><strong>Lista de variables representadas en el flujo</strong></summary>
