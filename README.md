@@ -1,5 +1,5 @@
 # Funcion dentro del proyecto
-El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la FPGA que se usara en el proyecto KUBIX2026 con un teclado regido bajo el protocolo de comunicacion PS2, para este fin el driver hara recibira las instrucciones en el formato propio de cada una de estos dos dispositivos y trabajara como un traductor capaz de extraer y formatear nuevamente al lenguaje adecuado para que el disposito que lo reciba pueda procesas la informacion.
+El driver PS2 desarrollado en este respositorio cumple la funcion de conectar la FPGA que se usara en el proyecto KUBIX2026 con un teclado regido bajo el protocolo de comunicacion PS2, para este fin el driver recibira las instrucciones en el formato propio de cada dispositivo (host y teclado) y trabajara como un traductor capaz de extraer y formatear nuevamente al lenguaje adecuado para que el receptor de forma que sea capaz de procesar la informacion.
 
 # Indice
 
@@ -66,7 +66,7 @@ sequenceDiagram
     K-->>H: FA, ACK
 ```
 
-El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5`.
+El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5` (disable).
 
 ## Diagrama de flujo para protocolo
 
