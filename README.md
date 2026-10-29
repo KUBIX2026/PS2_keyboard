@@ -15,7 +15,7 @@ El driver PS2 desarrollado en este respositorio cumple la funcion de comunicar l
 - [Scan codes](#scan-codes)
   - [Comandos disponibles para el host](#comandos-disponibles-para-el-host)
   - [Comandos disponibles para el teclado](#comandos-disponibles-para-el-teclado)
-- [Protocolo PS/2](./Protocolo_PS2.md)
+- [Para ir al Protocolo PS/2](./Protocolo_PS2.md)
 
 # Controles de la consola
 
