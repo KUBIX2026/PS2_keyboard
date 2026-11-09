@@ -105,7 +105,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar varias co
 ## Diagrama de flujo para comunicación host-teclado
 
 <p align="center">
-  <img src="Imagenes/diagrama_host_teclado_8_del_11_b.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
+  <img src="Imagenes/host-teclado_v2.svg" alt="Diagrama de flujo para comunicación host-teclado" width="700">
 </p>
 
 
