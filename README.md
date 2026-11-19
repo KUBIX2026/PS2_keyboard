@@ -67,6 +67,11 @@ sequenceDiagram
 ```
 
 El self-test tarda cientos de ms entre `FA` y `AA`. Tras el reset el teclado ya envía scan codes; `F4` solo es necesario despues de un `F5` (disable).
+## Diagrama de caja negra
+Diagrama planteado inicialmente para reconocer las entradas y salidas para el programa del controlador, a partir de este se desarrollan los demas diagramas.
+<p align="center">
+  <img src="Imagenes/A - cn.svg" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
+</p>
 
 ## Diagrama de flujo para el driver
 
@@ -93,7 +98,7 @@ El receptor PS/2 nos pasa cada byte que llega. El driver debe recordar varias co
 
  Diagrama planteado para visualizar las funciones del controlador como una serie de bloques con entradas y salidas, debido a su direccionalidad las funciones aqui planteadas deberan ser capaces de realizar el formateo y envio tanto en un sentido como en el otro.
 <p align="center">
-  <img src="Imagenes/Diagrama-de-bloques_v2.svg" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
+  <img src="Imagenes/Diagrama-de-bloques_v3.svg" alt="Diagrama de bloques para comunicación general del protocolo en ambos sentidos" width="1000">
 </p>
 
 
