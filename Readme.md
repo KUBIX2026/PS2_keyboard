@@ -6,10 +6,17 @@
 - [Recepción del teclado](#recepción-del-teclado)
 - [Transmisión al teclado](#transmisión-al-teclado)
 - [Identificación de trama](#identificación-de-trama)
+- [Diagrama caja negra](#diagrama-caja-negra)
+- [Diagrama bloques](#diagrama-bloques)
 - [Documentación del proyecto](Ps2_alProyecto.md)
 - [Protocolo PS/2](Protocolo_PS2.md)
 
 
+## Diagrama caja negra 
+
+<p align="center">
+  <img src="Imagenes/A%20-%20cn.svg" alt="Diagrama de caja negra">
+</p>
 
 ## Flujo principal
 
