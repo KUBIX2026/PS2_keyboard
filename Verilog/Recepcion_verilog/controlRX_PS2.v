@@ -34,7 +34,11 @@ module controlRX_PS2( clk , rst , data_ps2 , clk_ps2 , ok_1 , ok_2 , rst_dp , de
 
 always @(posedge clk) begin
     if (rst) begin
-      state = START;
+      state  <= START;
+      rst_dp <= 0;
+      dec_sh <= 0;
+      error  <= 0;
+      done   <= 0;
     end else begin
     case(state)
 
@@ -43,7 +47,7 @@ always @(posedge clk) begin
         dec_sh <= 0;
         error  <= 0;
         done   <= 0;
-        state = NEG_CLK;
+        state  <= NEG_CLK;
       end
 
       NEG_CLK: begin
@@ -52,9 +56,9 @@ always @(posedge clk) begin
         error  <= 0;
         done   <= 0;
         if(clk_ps2)
-          state = NEG_CLK;
+          state <= NEG_CLK;
         else
-          state = DEC_SH;
+          state <= DEC_SH;
       end
 
       DEC_SH: begin
@@ -62,7 +66,7 @@ always @(posedge clk) begin
         dec_sh <= 1;
         error  <= 0;
         done   <= 0;
-        state = POS_CLK;
+        state  <= POS_CLK;
       end
 
       POS_CLK: begin
@@ -71,9 +75,9 @@ always @(posedge clk) begin
         error  <= 0;
         done   <= 0;
         if(clk_ps2)
-          state = COMP_BITC;
+          state <= COMP_BITC;
         else
-          state = POS_CLK;
+          state <= POS_CLK;
       end
 
       COMP_BITC: begin
@@ -82,39 +86,42 @@ always @(posedge clk) begin
         error  <= 0;
         done   <= 0;
         if(ok_1)
-          state = COMP_PAR;
+          state <= COMP_PAR;
         else
-          state = NEG_CLK;
+          state <= NEG_CLK;
       end
 
       COMP_PAR: begin
         rst_dp <= 0;
         dec_sh <= 0;
-        error  <= 0;
         done   <= 0;
-        if(ok_2)
-          state = DONE;
-        else
-          state = ST_ERROR;
+        // paridad OK -> DONE sin error ; paridad mala -> ST_ERROR
+        if(ok_2) begin
+          error <= 0;
+          state <= DONE;
+        end else begin
+          error <= 1;
+          state <= ST_ERROR;
+        end
       end
 
       ST_ERROR: begin
         rst_dp <= 0;
         dec_sh <= 0;
-        error  <= 1;
+        error  <= 1;       // mantiene el error marcado en COMP_PAR
         done   <= 0;
-        state = DONE;
+        state  <= DONE;
       end
 
       DONE:begin
         rst_dp <= 0;
         dec_sh <= 0;
-        error  <= error;   // conserva el error calculado en ST_ERROR/COMP_PAR
+        // error ya quedo fijado en COMP_PAR/ST_ERROR; solo se mantiene
         done   <= 1;
-        state = START;
+        state  <= START;
       end
 
-     default: state = START;
+     default: state <= START;
    endcase
   end
 end

@@ -1,0 +1,37 @@
+// ============================================================================
+// Restricciones de pines para Tang Nano 9K (Gowin GW1NR-LV9QN88PC6/I5)
+// Formato CST (apio / Gowin / openFPGALoader + nextpnr-gowin).
+//
+// Reloj 27 MHz, boton de reset, LEDs activos en bajo y las dos lineas PS/2.
+// Los pines PS/2 usan dos filas del header; ajusta si tu cableado difiere.
+// ============================================================================
+
+// --- Reloj de 27 MHz ---
+IO_LOC  "clk27" 52;
+IO_PORT "clk27" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// --- Boton de reset (S1), activo en bajo ---
+IO_LOC  "rst_n" 4;
+IO_PORT "rst_n" IO_TYPE=LVCMOS18 PULL_MODE=UP;
+
+// --- 6 LEDs integrados, activos en bajo ---
+IO_LOC  "led_n[0]" 10;
+IO_LOC  "led_n[1]" 11;
+IO_LOC  "led_n[2]" 13;
+IO_LOC  "led_n[3]" 14;
+IO_LOC  "led_n[4]" 15;
+IO_LOC  "led_n[5]" 16;
+IO_PORT "led_n[0]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_PORT "led_n[1]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_PORT "led_n[2]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_PORT "led_n[3]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_PORT "led_n[4]" IO_TYPE=LVCMOS33 DRIVE=8;
+IO_PORT "led_n[5]" IO_TYPE=LVCMOS33 DRIVE=8;
+
+// --- Lineas del teclado PS/2 (entradas con pull-up) ---
+// Conector: PS2_CLK y PS2_DATA a 3.3V con sus pull-ups (open-drain del teclado).
+// Pines de ejemplo en el header de 1.8V/3.3V; cambialos por los que uses.
+IO_LOC  "ps2_clk" 25;
+IO_PORT "ps2_clk" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+IO_LOC  "ps2_dat" 26;
+IO_PORT "ps2_dat" IO_TYPE=LVCMOS33 PULL_MODE=UP;
