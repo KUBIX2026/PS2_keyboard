@@ -6,14 +6,14 @@
 // El 'indice' viene de ID_trama:
 //    0=A  1=B  2=Select  3=Start  4=Up  5=Down  6=Left  7=Right
 //
-// Comportamiento:
-//   - "Barra" de fondo acumulativa: cada pulsacion sube un nivel (1 LED mas),
-//     de 1 en 1 hasta llenar los N_LEDS; al llenarse avanza "de a 2" con wrap.
-//   - DESTELLO (flash) visible y corto en cada pulsacion: durante el flash se
-//     muestran SOLO los LEDs de la tecla pulsada y el resto se apaga. Asi la
-//     pulsacion SIEMPRE se percibe, incluso si cae sobre un LED que ya estaba
-//     encendido por la barra (lo demas se apaga un instante por contraste).
-//   - El destello dura FLASH_CYCLES ciclos de 'clk' (~visible pero corto).
+// Comportamiento (SIN barra de fondo, solo DESTELLO por pulsacion):
+//   - En reposo TODOS los LEDs estan apagados.
+//   - Cada pulsacion valida (key_stroke) enciende SOLO el/los LED(s) de esa
+//     tecla durante FLASH_CYCLES ciclos (~0.3 s) y luego se apaga.
+//   - Si se MANTIENE la tecla, el teclado reenvia tramas (typematic/repeat);
+//     cada trama vuelve a lanzar key_stroke y RE-ARRANCA el temporizador, de
+//     modo que el LED permanece encendido mientras se mantiene pulsada y se
+//     apaga ~0.3 s despues de soltar.
 //
 // Mapeo indice -> LED (destello):
 //     Left  (6)->LED1  Right (7)->LED2  Up   (4)->LED3
@@ -27,8 +27,8 @@
 //============================================================================
 module leds_ctrl #(
   parameter N_LEDS      = 6,
-  // Duracion del destello en ciclos de clk. A 27 MHz, 4_000_000 ~= 148 ms.
-  parameter FLASH_CYCLES = 27'd4_000_000
+  // Duracion del destello en ciclos de clk. A 27 MHz, 8_100_000 ~= 0.3 s.
+  parameter FLASH_CYCLES = 27'd8_100_000
 )(
   input                   clk,
   input                   rst,          // reset sincrono, activo en alto
@@ -58,36 +58,21 @@ module leds_ctrl #(
     endcase
   end
 
-  // --- Barra de fondo acumulativa ---
-  reg [3:0]        nivel;   // cuantos LEDs enciende la barra (0..N_LEDS)
-  reg [N_LEDS-1:0] barra;   // los 'nivel' LEDs menos significativos encendidos
-
-  integer k;
-  always @(*) begin
-    for (k = 0; k < N_LEDS; k = k + 1)
-      barra[k] = (k < nivel);
-  end
-
   // --- Destello temporal ---
   reg [26:0]       flash_cnt;    // ciclos restantes del destello (0 = inactivo)
-  reg [N_LEDS-1:0] flash_mask;   // que LED esta destellando (one-hot)
+  reg [N_LEDS-1:0] flash_mask;   // que LED(s) estan destellando
   wire             flashing = (flash_cnt != 27'd0);
 
   always @(posedge clk) begin
     if (rst) begin
-      nivel      <= 4'd0;
       flash_cnt  <= 27'd0;
       flash_mask <= {N_LEDS{1'b0}};
     end else begin
-      // Nueva pulsacion: sube la barra y lanza el destello del LED de la tecla.
+      // Nueva pulsacion (incluye las repeticiones typematic al mantener):
+      // fija el/los LED(s) de la tecla y (re)arranca el temporizador.
       if (key_stroke) begin
-        if (nivel < N_LEDS)
-          nivel <= nivel + 4'd1;                               // de 1 en 1
-        else
-          nivel <= (nivel + 4'd2 > N_LEDS) ? 4'd2 : nivel + 4'd2; // de a 2 (wrap)
-
-        flash_mask <= led_tecla;        // LED que va a destellar
-        flash_cnt  <= FLASH_CYCLES;     // (re)arranca el temporizador
+        flash_mask <= led_tecla;        // LED(s) que van a encenderse
+        flash_cnt  <= FLASH_CYCLES;     // (re)arranca el temporizador (~0.3 s)
       end else if (flashing) begin
         flash_cnt <= flash_cnt - 27'd1; // consume el tiempo del destello
       end
@@ -95,16 +80,13 @@ module leds_ctrl #(
   end
 
   // Salida visible:
-  //   - Durante el DESTELLO: se muestran SOLO los LEDs de la tecla pulsada
-  //     (1 LED para teclas normales; 2 LEDs para A/B). El resto se apaga, de
-  //     modo que la pulsacion SIEMPRE se percibe, incluso si cae sobre un LED
-  //     que ya estaba encendido en la barra (todo lo demas se apaga un instante).
-  //   - En REPOSO: se muestra la barra acumulativa de fondo.
+  //   - Durante el DESTELLO: solo el/los LED(s) de la tecla pulsada.
+  //   - En REPOSO: todo apagado.
   always @(*) begin
     if (flashing)
       leds = flash_mask;
     else
-      leds = barra;
+      leds = {N_LEDS{1'b0}};
   end
 
 endmodule

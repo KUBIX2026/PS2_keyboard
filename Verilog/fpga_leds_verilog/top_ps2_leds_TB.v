@@ -17,9 +17,9 @@ module top_ps2_leds_TB;
   // LEDs en logica positiva para imprimir facil (placa es activa en bajo)
   wire [5:0] leds = ~led_n;
 
-  // FLASH para simular: 5000 ciclos (en la placa son 4_000_000 ~=148ms).
-  // Mas largo que un send_byte para poder observar el destello "encendido"
-  // justo tras la tecla y luego el reposo cuando expira.
+  // FLASH para simular: 5000 ciclos (en la placa son 8_100_000 ~=0.3s).
+  // Mas largo que un send_byte para poder observar el LED "encendido"
+  // justo tras la tecla y luego el reposo (apagado) cuando expira.
   top_ps2_leds #(.FLASH_CYCLES(27'd5000)) uut (
     .clk27(clk27), .rst_n(rst_n),
     .ps2_clk(ps2_clk), .ps2_dat(ps2_dat),
@@ -75,7 +75,7 @@ module top_ps2_leds_TB;
   // Monitor del evento de pulsacion: muestra el instante del destello real.
   always @(posedge clk27) begin
     if (uut.key_stroke)
-      $display("[%0t]   >> key_stroke idx=%0d : arranca DESTELLO (se muestra solo la tecla)",
+      $display("[%0t]   >> key_stroke idx=%0d : enciende LED(s) de la tecla ~0.3s",
                $time, uut.id_indice);
   end
 
@@ -99,31 +99,30 @@ module top_ps2_leds_TB;
     repeat (10) @(posedge clk27);
     show("tras reset");
 
-    $display("--- Cada tecla: DESTELLO (justo tras pulsar) y REPOSO (tras expirar) ---");
-    send_byte(8'h1C); show("Left  DESTELLO");  esperar_reposo; show("Left  reposo");
-    send_byte(8'h23); show("Right DESTELLO");  esperar_reposo; show("Right reposo");
-    send_byte(8'h1D); show("Up    DESTELLO");  esperar_reposo; show("Up    reposo");
-    send_byte(8'h1B); show("Down  DESTELLO");  esperar_reposo; show("Down  reposo");
-    send_byte(8'h5A); show("Start DESTELLO");  esperar_reposo; show("Start reposo");
-    send_byte(8'h29); show("Select DESTELLO"); esperar_reposo; show("Select reposo");
+    $display("--- Cada tecla: ENCENDIDO (justo tras pulsar) y REPOSO apagado (tras expirar) ---");
+    send_byte(8'h1C); show("Left  ON");  esperar_reposo; show("Left  reposo");
+    send_byte(8'h23); show("Right ON");  esperar_reposo; show("Right reposo");
+    send_byte(8'h1D); show("Up    ON");  esperar_reposo; show("Up    reposo");
+    send_byte(8'h1B); show("Down  ON");  esperar_reposo; show("Down  reposo");
+    send_byte(8'h5A); show("Start ON");  esperar_reposo; show("Start reposo");
+    send_byte(8'h29); show("Select ON"); esperar_reposo; show("Select reposo");
 
-    $display("--- Caso clave: pulsar una tecla cuyo LED YA estaba encendido ---");
-    $display("    (barra llena = 111111; Left destella mostrando SOLO LED1, lo demas se apaga)");
-    send_byte(8'h1C); show("Left repetido DESTELLO (solo LED1 visible)");
-    esperar_reposo;   show("Left repetido reposo (barra avanza de a 2 -> 000011)");
+    $display("--- Repetir una tecla: re-enciende su LED y se vuelve a apagar (sin acumular) ---");
+    send_byte(8'h1C); show("Left repetido ON (solo LED1)");
+    esperar_reposo;   show("Left repetido reposo (todo apagado)");
 
-    $display("--- Break code: soltar tecla NO cuenta ni destella ---");
+    $display("--- Break code: soltar tecla NO cuenta ni enciende ---");
     send_byte(8'hF0); show("F0 (break prefix)");
-    send_byte(8'h1C); show("1C tras F0 (suelta Left: sin destello)");
-    esperar_reposo;   show("reposo tras break (sin cambios)");
+    send_byte(8'h1C); show("1C tras F0 (suelta Left: no enciende)");
+    esperar_reposo;   show("reposo tras break (todo apagado)");
 
-    $display("--- Teclas que REUTILIZAN: destellan DOS LEDs ---");
-    $display("    A -> dos de la izquierda (LED1+LED2); B -> dos de la derecha (LED5+LED6)");
-    send_byte(8'h3B); show("A DESTELLO (LED1+LED2)");  esperar_reposo; show("A reposo");
-    send_byte(8'h42); show("B DESTELLO (LED5+LED6)");  esperar_reposo; show("B reposo");
+    $display("--- Teclas que encienden DOS LEDs ---");
+    $display("    A -> los 2 de la IZQUIERDA (LED1+LED2); B -> los 2 de la DERECHA (LED5+LED6)");
+    send_byte(8'h3B); show("A ON (LED1+LED2)");  esperar_reposo; show("A reposo");
+    send_byte(8'h42); show("B ON (LED5+LED6)");  esperar_reposo; show("B reposo");
 
-    $display("--- Tecla normal tras el break vuelve a destellar y contar ---");
-    send_byte(8'h1D); show("Up DESTELLO (cuenta de nuevo)");
+    $display("--- Tecla normal tras el break vuelve a encender ---");
+    send_byte(8'h1D); show("Up ON");
     esperar_reposo;   show("Up reposo");
 
     repeat (20) @(posedge clk27);

@@ -21,8 +21,8 @@
 //============================================================================
 module top_ps2_leds #(
   // Duracion del destello del LED por pulsacion, en ciclos de clk27.
-  // 27 MHz * 0.148 s ~= 4_000_000. El testbench lo reduce para simular rapido.
-  parameter FLASH_CYCLES = 27'd4_000_000
+  // 27 MHz * 0.3 s ~= 8_100_000. El testbench lo reduce para simular rapido.
+  parameter FLASH_CYCLES = 27'd8_100_000
 )(
   input        clk27,
   input        rst_n,
