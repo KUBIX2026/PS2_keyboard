@@ -1,4 +1,4 @@
-module controlRX_PS2( clk , rst , data_ps2 , clk_ps2 , ok_1 , ok_2 , rst_dp , dec_sh , error , done );
+module controlRX_PS2( clk , rst , data_ps2 , clk_ps2 , ok_1 , ok_2 , rst_dp , dec_sh , load , error , done );
 
  input clk;
  input rst;
@@ -9,6 +9,7 @@ module controlRX_PS2( clk , rst , data_ps2 , clk_ps2 , ok_1 , ok_2 , rst_dp , de
 
  output reg rst_dp;
  output reg dec_sh;
+ output     load;    // pulso COMBINACIONAL: capturar data_rx (trama valida)
  output reg error;
  output reg done;
 
@@ -31,6 +32,11 @@ module controlRX_PS2( clk , rst , data_ps2 , clk_ps2 , ok_1 , ok_2 , rst_dp , de
   done   = 0;
   state  = 0;
  end
+
+ // load COMBINACIONAL: se activa SOLO en COMP_PAR con paridad OK. Asi el
+ // datapath captura data_rx en el flanco COMP_PAR->DONE, quedando estable y
+ // alineado con el pulso 'done'. Trama invalida (ok_2=0) NO captura.
+ assign load = (state == COMP_PAR) & ok_2;
 
 always @(posedge clk) begin
     if (rst) begin
@@ -96,6 +102,7 @@ always @(posedge clk) begin
         dec_sh <= 0;
         done   <= 0;
         // paridad OK -> DONE sin error ; paridad mala -> ST_ERROR
+        // (la captura de data_rx la hace 'load' combinacional con ok_2)
         if(ok_2) begin
           error <= 0;
           state <= DONE;

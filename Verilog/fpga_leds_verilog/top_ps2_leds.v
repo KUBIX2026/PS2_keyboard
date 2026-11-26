@@ -87,51 +87,25 @@ module top_ps2_leds #(
   );
 
   //--------------------------------------------------------------------------
-  // Identificar trama (combinacional). Se evalua sobre data_rx.
+  // Identificar trama (combinacional, flujo V2). Se evalua sobre data_rx.
+  //   V2 solo expone: done (ACK 0xFA), indice (0..7) e idx_valid.
   //--------------------------------------------------------------------------
-  // Bandera de contexto 'c' (0xAB -> 0x83) registrada, como pide ID_trama.
-  reg  c_reg;
-  wire c_next;
-  wire id_done, id_tx, id_error, id_out_valid, id_idx_valid, id_is_f0;
-  wire [7:0] id_out;
+  wire       id_done;
+  wire       id_idx_valid;
   wire [2:0] id_indice;
 
   ID_trama u_id (
     .data_rx   (data_rx),
-    .c_in      (c_reg),
     .done      (id_done),
-    .tx_start  (id_tx),
-    .c_out     (c_next),
-    .error     (id_error),
-    .out       (id_out),
-    .out_valid (id_out_valid),
     .indice    (id_indice),
-    .idx_valid (id_idx_valid),
-    .is_f0     (id_is_f0)
+    .idx_valid (id_idx_valid)
   );
 
-  //--------------------------------------------------------------------------
-  // Secuencial de contexto: registrar c y la bandera de break (F0).
-  //   - c_reg se actualiza solo cuando llega un byte nuevo (rx_done).
-  //   - f0_reg marca que el PROXIMO scancode es un "break" (tecla soltada),
-  //     para NO contarlo como pulsacion.
-  //--------------------------------------------------------------------------
-  reg f0_reg;
-  always @(posedge clk27) begin
-    if (rst) begin
-      c_reg  <= 1'b0;
-      f0_reg <= 1'b0;
-    end else if (rx_done) begin
-      c_reg <= c_next;                 // registra la bandera de contexto
-      if (id_is_f0)
-        f0_reg <= 1'b1;                // llego 0xF0 -> el siguiente es break
-      else
-        f0_reg <= 1'b0;                // cualquier otro byte limpia el break
-    end
-  end
+  // NOTA: el break code 0xF0 (tecla soltada) NO se maneja aqui; se tratara en
+  // el bloque de "Logica salida" (p.ej. salida_nes), fuera de este top.
 
-  // Pulso de "tecla presionada": byte recibido + indice valido + NO es break.
-  wire key_stroke = rx_done & id_idx_valid & ~f0_reg;
+  // Pulso de "tecla reconocida": byte recibido + indice valido.
+  wire key_stroke = rx_done & id_idx_valid;
 
   //--------------------------------------------------------------------------
   // Logica de salida de LEDs

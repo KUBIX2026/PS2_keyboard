@@ -4,7 +4,8 @@
 //
 // Inyecta scancodes PS/2 reales con paridad impar y flancos de PS2_CLK,
 // igual que un teclado fisico, y verifica que los LEDs (activos en bajo)
-// reaccionen a cada tecla de control (make) y NO a las sueltas (break F0).
+// reaccionen a cada tecla de control (make). El break code 0xF0 (tecla
+// soltada) NO se filtra en este top: se maneja en el bloque "Logica salida".
 //============================================================================
 module top_ps2_leds_TB;
 
@@ -111,10 +112,12 @@ module top_ps2_leds_TB;
     send_byte(8'h1C); show("Left repetido ON (solo LED1)");
     esperar_reposo;   show("Left repetido reposo (todo apagado)");
 
-    $display("--- Break code: soltar tecla NO cuenta ni enciende ---");
-    send_byte(8'hF0); show("F0 (break prefix)");
-    send_byte(8'h1C); show("1C tras F0 (suelta Left: no enciende)");
-    esperar_reposo;   show("reposo tras break (todo apagado)");
+    $display("--- Break code 0xF0: aqui NO se maneja (se trata en Logica salida) ---");
+    $display("    0xF0 solo no mapea -> no enciende; pero el scancode que le sigue");
+    $display("    SI enciende en este top (el filtrado de 'suelta' va en otro bloque).");
+    send_byte(8'hF0); show("F0 (no mapea, no enciende)");
+    send_byte(8'h1C); show("1C tras F0 (en este top SI enciende Left/LED1)");
+    esperar_reposo;   show("reposo");
 
     $display("--- Teclas que encienden DOS LEDs ---");
     $display("    A -> los 2 de la IZQUIERDA (LED1+LED2); B -> los 2 de la DERECHA (LED5+LED6)");

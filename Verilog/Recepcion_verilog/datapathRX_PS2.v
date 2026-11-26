@@ -13,11 +13,13 @@
 // (start + 8 datos + paridad); el bit de stop no se procesa.
 // data_rx = 8 bits de datos (sr[9:2]).
 //============================================================================
-module datapathRX_PS2( clk , rst_dp , dec_sh , data_ps2 , data_rx , ok_1 , ok_2 );
+module datapathRX_PS2( clk , rst , rst_dp , dec_sh , load , data_ps2 , data_rx , ok_1 , ok_2 );
 
  input clk;
+ input rst;         // reset global (borra el dato retenido data_hold)
  input rst_dp;
  input dec_sh;
+ input load;        // pulso del control: capturar data_rx (trama valida, DONE)
  input data_ps2;
 
  output [7:0] data_rx;
@@ -59,7 +61,20 @@ module datapathRX_PS2( clk , rst_dp , dec_sh , data_ps2 , data_rx , ok_1 , ok_2 
  // COMP_PAR : paridad == 1?  (paridad impar correcta)
  assign ok_2 = (parity == 1'b1);
 
- // data_RX : 8 bits de datos (alineados en sr[9:2] al capturar 10 bits)
- assign data_rx = sr[9:2];
+ // data_RX : registro de SALIDA. A diferencia de una ventana combinacional
+ // del shift register (que cambiaria bit a bit mientras llega la trama), este
+ // registro SOLO se actualiza cuando el control pulsa 'load' (en DONE, tras
+ // comprobar paridad). Asi data_rx queda ESTABLE con el byte final y no
+ // "baila" con los valores intermedios de la recepcion. Se borra solo con el
+ // reset GLOBAL (no con rst_dp, que se activa al inicio de CADA trama y
+ // perderia el dato retenido entre bytes).
+ //   sr[9:2] = 8 bits de datos alineados al capturar los 10 bits de la trama.
+ reg [7:0] data_hold;
+ initial data_hold = 8'h00;
+ always @(posedge clk) begin
+   if (rst)       data_hold <= 8'h00;
+   else if (load) data_hold <= sr[9:2];
+ end
+ assign data_rx = data_hold;
 
 endmodule
