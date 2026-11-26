@@ -1,11 +1,11 @@
 //============================================================================
 // ID_trama : Identificar trama (bloque COMBINACIONAL)
 //
-// Implementa el flujo de IdentificarTramaFlujoV2.png: un "switch case grande"
-// (combinacional). V2 solo contempla:
+// Implementa el flujo de IdentificarTramaFlujoV3.png: un "switch case grande"
+// (combinacional). V3 contempla:
 //
 //     Inicio: data_RX, Load C, i = -1
-//       data_RX == 0xFA ?      -> si: done = 1  (-> Recepcion)
+//       data_RX == 0xF0 ?      -> si: is_f0 = 1 (el bloque de salida fija F0 = 1)
 //       data_RX == 0x3B|0x75 ? -> si: i = 0
 //       data_RX == 0x42|0x06 ? -> si: i = 1
 //       data_RX == 0x29|0x70 ? -> si: i = 2
@@ -16,15 +16,10 @@
 //       data_RX == 0x23|0x74 ? -> si: i = 7
 //       en cualquier otro caso -> "volver" (sin accion)
 //
-// Por eso este modulo SOLO expone lo que V2 usa:
-//   - done      : 1 cuando llega el ACK 0xFA.
+// Este modulo expone lo que V3 usa:
+//   - is_f0     : 1 cuando llega el break code 0xF0.
 //   - indice    : indice de tecla de control (0..7).
 //   - idx_valid : 1 si 'indice' es valido; 0 => "i = -1" = no hizo nada.
-//
-// Lo demas del diagrama antiguo (bandera de contexto C para 0xAB/0x83,
-// tx_start para 0xFE, error para 0x00/0xFF, out/out_valid, deteccion de 0xF0)
-// NO forma parte de V2 y se elimina. La deteccion del break code 0xF0, si se
-// necesita aguas arriba, se hace afuera directamente como (data_rx == 0xF0).
 //
 // El "i = -1" del Inicio es el centinela que identifica "no hizo nada" desde
 // afuera: como 'indice' es de 3 bits sin signo, -1 no es representable, asi
@@ -34,21 +29,21 @@
 module ID_trama(
   input  [7:0] data_rx,   // byte recibido del RX_PS2
 
-  output reg       done,      // 1 => comando ACK (0xFA) -> Recepcion
+  output reg       is_f0,     // 1 => break code (0xF0) -> Recepcion
   output reg [2:0] indice,    // indice de tecla de control (0..7), valido si idx_valid
   output reg       idx_valid  // 0 => i = -1 (no hizo nada); 1 => 'indice' valido
 );
 
   always @(*) begin
     // --- Inicio: valores por defecto (i = -1, sin accion) ---
-    done      = 1'b0;
+    is_f0     = 1'b0;
     indice    = 3'd0;    // sin significado mientras idx_valid = 0 (i = -1 = nada)
     idx_valid = 1'b0;
 
-    // --- Switch case grande (tal como el diagrama V2) ---
+    // --- Switch case grande (tal como el diagrama V3) ---
     case (data_rx)
-      8'hFA: begin
-        done = 1'b1;                                 // ACK -> done=1 -> Recepcion
+      8'hF0: begin
+        is_f0 = 1'b1;                                // Break code -> Recepcion
       end
 
       8'h3B, 8'h75: begin

@@ -7,12 +7,12 @@
 // (El bloque ID_trama es combinacional y no puede guardar este estado; aqui
 //  se recibe is_f0 e idx del byte actual y se actualiza el estado.)
 //
-// Flujo del diagrama ("INICIO: load data_RX, i, out_RX"):
+// Flujo V3 ("INICIO: load data_RX, i_tradANes, out_RX, F0"):
 //   data_RX = 0xF0?            -> is_f0 (viene de ID_trama)
-//     Si -> F0 = 1
-//     No -> i >= 0?            -> idx_valid (hay una tecla reconocida)
-//             Si -> out_RX[i] = F0 ; luego F0 = 0
-//             No -> F0 = 0
+//     Si -> F0 = 1             -> esperar el scancode de la tecla soltada
+//     No -> i_tradANes = -1?
+//             Si -> no hay indice valido -> mantener o limpiar F0
+//             No -> out_RX[i] = F0 ; luego F0 = 0
 //
 // Interfaz tipo datapath: 'start' es un pulso de un ciclo que ordena procesar
 // el byte actual (is_f0, idx, idx_valid). 'done' se levanta un ciclo al
@@ -21,10 +21,10 @@
 //   out_RX[i] = 1 => boton i PRESIONADO  (scancode make, sin 0xF0 previo)
 //   out_RX[i] = 0 => boton i SOLTADO     (break: 0xF0 seguido del scancode)
 //
-// El diagrama escribe literalmente "out_RX[i] = F0", pero para la semantica
-// NES (presionado=1 / soltado=0) se usa el complemento: out_RX[i] = ~F0.
-// Asi, tras un 0xF0 (F0=1) el boton queda en 0 (soltado) y en un make normal
-// (F0=0) queda en 1 (presionado).
+// Para la semantica NES se usa el complemento: out_RX[i] = ~F0.
+// Tras un 0xF0, F0=1 y el siguiente scancode reconocido pone el boton en 0
+// (soltado). Sin el prefijo F0, F0=0 y el scancode pone el boton en 1
+// (presionado).
 //============================================================================
 module salida_nes(
   input        clk,

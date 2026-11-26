@@ -87,22 +87,22 @@ module top_ps2_leds #(
   );
 
   //--------------------------------------------------------------------------
-  // Identificar trama (combinacional, flujo V2). Se evalua sobre data_rx.
-  //   V2 solo expone: done (ACK 0xFA), indice (0..7) e idx_valid.
+  //   Identificar trama (combinacional, flujo V3). Se evalua sobre data_rx.
+  //   V3 expone: is_f0 (break code 0xF0), indice (0..7) e idx_valid.
   //--------------------------------------------------------------------------
-  wire       id_done;
+  wire       id_is_f0;
   wire       id_idx_valid;
   wire [2:0] id_indice;
 
   ID_trama u_id (
     .data_rx   (data_rx),
-    .done      (id_done),
+    .is_f0     (id_is_f0),
     .indice    (id_indice),
     .idx_valid (id_idx_valid)
   );
 
-  // NOTA: el break code 0xF0 (tecla soltada) NO se maneja aqui; se tratara en
-  // el bloque de "Logica salida" (p.ej. salida_nes), fuera de este top.
+  // La salida id_is_f0 identifica el break code 0xF0 para los bloques de
+  // logica de salida que necesiten distinguir teclas soltadas.
 
   // Pulso de "tecla reconocida": byte recibido + indice valido.
   wire key_stroke = rx_done & id_idx_valid;
